@@ -4,22 +4,25 @@ LOCALHOST = 'localhost'
 
 Connection = None
 
-class SourceNode:
-  def __init__(self, id):
-    self.id = id
+def transmit(data):
+  Connection.sendall(data.encode())
 
-  def transmit(self, *value):
-    Connection.socket.sendall(','.join(list(map(lambda x: str(x).encode(), value))))
+def transmit_list(*data):
+  transmit(','.join(list(map(str, data))))
 
-class SinkNode:
-  def __init__(self, id):
-    self.id = id
+def retrieve():
+  data = ''
+  while (byte := Connection.recv(1)) != b'\n':
+    data += byte.decode()
+  return data
 
-  def retrieve(self, *value):
-    data = ''
-    while (byte := Connection.socket.recv(1)) != b'\n':
-      data += byte.decode()
-    return data.split(',')
+def retrieve_list():
+  data = retrieve()
+  return data.split(',')
+
+def retrieve_mapped_list(func):
+  data = retrieve_list()
+  return list(map(func, data))
 
 def connect(port):
   Connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
