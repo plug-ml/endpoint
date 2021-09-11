@@ -21,10 +21,6 @@ class SinkNode:
       data += byte.decode()
     return data.split(',')
 
-class __IPC:
-  def __init__(self, port):
-    self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.socket.connect((LOCALHOST, port))
-
 def connect(port):
-  Connection = __IPC(port)
+  Connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  Connection.connect((LOCALHOST, port))
