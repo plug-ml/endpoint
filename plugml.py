@@ -5,9 +5,9 @@ LOCALHOST = 'localhost'
 Connection = None
 
 def transmit(data):
-  Connection.sendall(data.encode())
+  Connection.sendall(('%s\n' % data).encode())
 
-def transmit_list(*data):
+def transmit_list(data):
   transmit(','.join(list(map(str, data))))
 
 def retrieve():
@@ -25,5 +25,6 @@ def retrieve_mapped_list(func):
   return list(map(func, data))
 
 def connect(port):
+  global Connection
   Connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   Connection.connect((LOCALHOST, port))
