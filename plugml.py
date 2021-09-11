@@ -19,7 +19,7 @@ class SinkNode:
     data = ''
     while (byte := Connection.socket.recv(1)) != b'\n':
       data += byte.decode()
-    return list(map(float, data.split(',')))
+    return data.split(',')
 
 class __IPC:
   def __init__(self, port):
